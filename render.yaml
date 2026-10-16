@@ -1,0 +1,33 @@
+services:
+  # 1. Dedicated Backend REST API Service
+  - type: web
+    name: teentalk-backend-api
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: JWT_SECRET
+        generateValue: true
+
+  # 2. Unified Full-Stack Web App (Frontend + Backend on 1 port)
+  - type: web
+    name: teentalk-fullstack
+    runtime: node
+    plan: free
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: JWT_SECRET
+        generateValue: true
